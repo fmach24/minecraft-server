@@ -58,6 +58,14 @@
         mode: '0644'
       register: props_copy
 
+    - name: 4c. Ustaw uprawnienia Grafany (rekurencyjnie)
+      file:
+        path: "{{ app_path }}/grafana-data"
+        state: directory
+        owner: "472"
+        group: "472"
+        recurse: yes
+
     - name: 5. Odpal wszystkie kontenery
       become_user: "{{ mc_user }}"
       shell:
