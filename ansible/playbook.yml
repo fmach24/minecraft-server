@@ -32,7 +32,6 @@
         - "{{ app_path }}"
         - "{{ app_path }}/mc-data"
         - "{{ app_path }}/config"
-        - "{{ app_path }}/prometheus"
 
     - name: 4. Skopiuj pliki Stacku na serwer
       copy:
