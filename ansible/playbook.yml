@@ -31,6 +31,7 @@
       loop:
         - "{{ app_path }}"
         - "{{ app_path }}/mc-data"
+        - "{{ app_path }}/config"
         - "{{ app_path }}/prometheus"
 
     - name: 4. Skopiuj pliki Stacku na serwer
@@ -39,6 +40,14 @@
         dest: "{{ app_path }}/"
         owner: "{{ mc_user }}"
         group: "{{ mc_user }}"
+
+    - name: 4b. Skopiuj server.properties na serwer
+      copy:
+        src: ../minecraft-config/server.properties
+        dest: "{{ app_path }}/config/server.properties"
+        owner: "{{ mc_user }}"
+        group: "{{ mc_user }}"
+        mode: '0644'
 
     - name: 5. Odpal wszystkie kontenery
       become_user: "{{ mc_user }}"

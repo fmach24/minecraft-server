@@ -9,6 +9,7 @@ services:
       MEMORY: "2G"      # MEMORY ALLOCATED TO MC
     volumes:
       - ./mc-data:/data
+      - ./config/server.properties:/data/server.properties:ro
     ports:
       - "25565:25565"
     restart: unless-stopped
