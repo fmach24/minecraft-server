@@ -1,0 +1,28 @@
+services:
+  minecraft:
+    image: itzg/minecraft-server:latest
+    container_name: mc-server
+    environment:
+      EULA: "TRUE"
+      TYPE: "PAPER"     # SERVER TYPE (PAPER, SPIGOT, VANILLA)
+      VERSION: "1.20.4" # MC VERSION
+      MEMORY: "2G"      # MEMORY ALLOCATED TO MC
+    volumes:
+      - ./mc-data:/data
+    ports:
+      - "25565:25565"
+    restart: unless-stopped
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    restart: unless-stopped

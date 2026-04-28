@@ -1,0 +1,47 @@
+---
+- name: Setup Minecraft & Monitoring Stack
+  hosts: all
+  become: yes # USING ROOT
+
+  vars:
+    mc_user: "minecraft"
+    app_path: "/home/minecraft/app"
+
+  tasks:
+    - name: 1. Zainstaluj Docker i Docker Compose
+      apt:
+        name: [docker.io, docker-compose-v2]
+        update_cache: yes
+        state: present
+
+    - name: 2. Stworzyj uzytkownika minecraft (bezpieczenstwo)
+      user:
+        name: "{{ mc_user }}"
+        groups: docker
+        append: yes
+        shell: /bin/bash
+
+    - name: 3. Przygotuj foldery na dane
+      file:
+        path: "{{ item }}"
+        state: directory
+        owner: "{{ mc_user }}"
+        group: "{{ mc_user }}"
+        mode: '0755'
+      loop:
+        - "{{ app_path }}"
+        - "{{ app_path }}/mc-data"
+        - "{{ app_path }}/prometheus"
+
+    - name: 4. Skopiuj pliki Stacku na serwer
+      copy:
+        src: ../stack/
+        dest: "{{ app_path }}/"
+        owner: "{{ mc_user }}"
+        group: "{{ mc_user }}"
+
+    - name: 5. Odpal wszystkie kontenery
+      become_user: "{{ mc_user }}"
+      shell:
+        cmd: docker compose up -d --remove-orphans
+        chdir: "{{ app_path }}"
