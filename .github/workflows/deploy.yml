@@ -20,16 +20,9 @@ jobs:
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
-          printf '%s\n' "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -H ${{ secrets.REMOTE_HOST }} >> ~/.ssh/known_hosts
-
-      - name: Generate inventory
-        run: |
-          cat > ansible/inventory.ini <<'EOF'
-          [mc_server]
-          myserver ansible_host=${{ secrets.REMOTE_HOST }} ansible_user=root
-          EOF
 
       - name: Run Ansible Playbook
         env:
@@ -37,4 +30,4 @@ jobs:
           ANSIBLE_HOST_KEY_CHECKING: "False"
         run: |
           ansible-playbook -i ansible/inventory.ini ansible/playbook.yml \
-          --private-key /home/runner/.ssh/id_ed25519
+          --extra-vars "target_host=${{ secrets.REMOTE_HOST }} ansible_ssh_private_key_file=~/.ssh/id_ed25519"
