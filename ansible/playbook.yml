@@ -56,4 +56,11 @@
       shell:
         cmd: docker compose up -d --remove-orphans
         chdir: "{{ app_path }}"
-      when: stack_copy.changed or props_copy.changed
+      when: stack_copy.changed
+
+    - name: 6. Restartuj tylko minecraft po zmianie configu
+      become_user: "{{ mc_user }}"
+      shell:
+        cmd: docker compose restart minecraft
+        chdir: "{{ app_path }}"
+      when: props_copy.changed
