@@ -33,6 +33,14 @@
         - "{{ app_path }}/mc-data"
         - "{{ app_path }}/config"
 
+    - name: 3b. Przygotuj dane Grafany (wlasciwe uprawnienia)
+      file:
+        path: "{{ app_path }}/grafana-data"
+        state: directory
+        owner: "472"
+        group: "472"
+        mode: '0755'
+
     - name: 4. Skopiuj pliki Stacku na serwer
       copy:
         src: ../stack/
