@@ -40,6 +40,7 @@
         dest: "{{ app_path }}/"
         owner: "{{ mc_user }}"
         group: "{{ mc_user }}"
+      register: stack_copy
 
     - name: 4b. Skopiuj server.properties na serwer
       copy:
@@ -48,9 +49,11 @@
         owner: "{{ mc_user }}"
         group: "{{ mc_user }}"
         mode: '0644'
+      register: props_copy
 
     - name: 5. Odpal wszystkie kontenery
       become_user: "{{ mc_user }}"
       shell:
         cmd: docker compose up -d --remove-orphans
         chdir: "{{ app_path }}"
+      when: stack_copy.changed or props_copy.changed
