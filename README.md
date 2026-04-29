@@ -63,11 +63,13 @@ docker compose up -d
 
 ### Example dashboards
 
-![Players dashboard](<img width="1920" height="1200" alt="Screenshot From 2026-04-29 17-20-27" src="https://github.com/user-attachments/assets/9d13e1e0-5835-49d5-9e1b-bc985fff87ef" />
-)
-![Performance dashboards](<img width="1920" height="1200" alt="Screenshot From 2026-04-29 17-16-25" src="https://github.com/user-attachments/assets/74ed404c-76cc-4e87-b6e7-7e49ff24a0d3" />
+![Players dashboard]
+<img width="1920" height="1200" alt="Screenshot From 2026-04-29 17-20-27" src="https://github.com/user-attachments/assets/9d13e1e0-5835-49d5-9e1b-bc985fff87ef" />
+
+![Performance dashboards]
+<img width="1920" height="1200" alt="Screenshot From 2026-04-29 17-16-25" src="https://github.com/user-attachments/assets/74ed404c-76cc-4e87-b6e7-7e49ff24a0d3" />
+
 <img width="1920" height="1200" alt="Screenshot From 2026-04-29 17-17-04" src="https://github.com/user-attachments/assets/7dd5431b-3d10-4c25-8366-c8a58d93f1ad" />
-)
 
 ---
 
