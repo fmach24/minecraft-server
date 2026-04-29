@@ -19,7 +19,7 @@ services:
     container_name: prometheus
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
-      - ./prometheus/data:/prometheus
+      - prometheus_data:/prometheus
     command:
       - --config.file=/etc/prometheus/prometheus.yml
       - --storage.tsdb.path=/prometheus
@@ -54,7 +54,7 @@ services:
     image: grafana/grafana:latest
     container_name: grafana
     volumes:
-      - ./grafana/data:/var/lib/grafana
+      - grafana_data:/var/lib/grafana
       - ./grafana/provisioning:/etc/grafana/provisioning:ro  # for loading dashboards and datasources
     restart: unless-stopped
 
@@ -86,3 +86,7 @@ services:
 
 
  #    !!!!!!!!jak latwo sprawdzac logiii  !!!!!!!!jak latwo sprawdzac logiii 
+
+volumes:
+  prometheus_data:
+  grafana_data:
