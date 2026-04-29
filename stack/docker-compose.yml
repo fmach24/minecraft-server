@@ -82,13 +82,30 @@ services:
     volumes:
       - ./mc-data:/data:ro
     restart: unless-stopped
+  loki:
+    image: grafana/loki:2.8.2
+    container_name: loki
+    volumes:
+      - ./loki/config.yaml:/etc/loki/local-config.yaml:ro
+      - loki_data:/loki
+    command: -config.file=/etc/loki/local-config.yaml
+    restart: unless-stopped
 
+  promtail:
+    image: grafana/promtail:2.8.2
+    container_name: promtail
+    volumes:
+      - ./promtail/config.yml:/etc/promtail/config.yml:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/log:/var/log:ro
+      - ./promtail/positions.yaml:/tmp/positions.yaml
+    restart: unless-stopped
 
-#TODO
- #    !!!!!!!!jak latwo sprawdzac logiii  !!!!!!!!jak latwo sprawdzac logiii 
- #+ pobieranie mapy co jakis czas
- #zeby byly na stale dashboardy node + docker stats
+# TODO: jak latwo sprawdzac logiii
+# - pobieranie mapy co jakis czas
+# - stale dashboardy node + docker stats
 
 volumes:
   prometheus_data:
   grafana_data:
+  loki_data:
