@@ -60,3 +60,17 @@ services:
     volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
     restart: unless-stopped
+
+  mc-stats-exporter:
+    build:
+      context: ./mc-stats-exporter
+    container_name: mc-stats-exporter
+    environment:
+      DATA_DIR: "/data"
+      PORT: "9225"
+      MC_QUERY_HOST: "minecraft"
+      MC_QUERY_PORT: "25565"
+      QUERY_TIMEOUT: "1.0"
+    volumes:
+      - ./mc-data:/data:ro
+    restart: unless-stopped
