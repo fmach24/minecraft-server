@@ -53,9 +53,25 @@
     - name: 5. Odpal wszystkie kontenery
       become_user: "{{ mc_user }}"
       shell:
-        cmd: docker compose up -d --remove-orphans --force-recreate
+        cmd: docker compose up -d --remove-orphans
         chdir: "{{ app_path }}"
       when: stack_copy.changed
+
+    - name: 5b. Poproś Prometheusa o przeładowanie konfiguracji (bez restartu)
+      become_user: "{{ mc_user }}"
+      shell:
+        cmd: docker compose exec -T prometheus sh -c "curl -s -o /dev/null -w '%{http_code}' -XPOST http://localhost:9090/-/reload"
+        chdir: "{{ app_path }}"
+      register: prometheus_reload
+      failed_when: false
+      when: stack_copy.changed
+
+    - name: 5c. Jeśli przeładowanie nie zwróciło 200/202, restartuj kontener Prometheus
+      become_user: "{{ mc_user }}"
+      shell:
+        cmd: docker compose restart prometheus
+        chdir: "{{ app_path }}"
+      when: stack_copy.changed and (prometheus_reload.stdout is not defined or (prometheus_reload.stdout | int) not in [200,202])
 
     - name: 6. Restartuj tylko minecraft po zmianie configu
       become_user: "{{ mc_user }}"

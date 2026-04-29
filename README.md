@@ -85,15 +85,17 @@ This section explains exactly how the stack is deployed, which files are persist
    - `stack/docker-compose.yml` mounts these host folders into containers:
       - `./mc-data:/data` (Minecraft world, player data, `usercache.json`, `stats/*.json`) — this is the primary persistence point for world and player statistics.
       - `./config/server.properties:/data/server.properties` — the server configuration; editing this file in the repo and redeploying will apply the config.
-      - `./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml` — Prometheus config file is mounted so you manage scraping targets in Git.
+      - `./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro` — Prometheus config file is mounted (read‑only) so you manage scraping targets in Git.
+      - `./prometheus/data:/prometheus` — Prometheus TSDB host volume (metrics history) — added to persist time series data across container recreates.
       - `./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro` — nginx proxy config for Grafana (if you keep `grafana-proxy`).
    - `node-exporter` and `cadvisor` mount host system paths (`/proc`, `/sys`, `/var/lib/docker` etc.) read-only — these are read-only system mounts and not persisted by Docker.
 
 - What is persistent vs what resets
    - Persistent (won't be lost when a container restarts or is recreated): anything under host-mounted folders listed above (most important: `mc-data`, `config/server.properties`, `prometheus/prometheus.yml`).
    - Not persistent (will be lost if you remove and recreate the container) unless you add explicit volumes:
-      - Prometheus TSDB (time-series database) — by default in this stack `prometheus` only has `prometheus.yml` mounted and no host volume for TSDB. That means the TSDB lives inside the container filesystem: if you remove the container (or recreate without external volume) Prometheus will lose historic metrics. To persist Prometheus TSDB, add a host volume, e.g. `- ./prometheus/data:/prometheus` and set `storage.tsdb.path: /prometheus` in config or use the Prometheus official volume layout.
-      - Grafana database (dashboards, users, preferences) — Grafana currently has no host volume in the compose file, so Grafana's sqlite DB and any provisioned data stored inside the container will be lost if the container is removed. To persist Grafana data add a volume, e.g. `- ./grafana/data:/var/lib/grafana`.
+      - Prometheus TSDB (time-series database) — this repo now mounts `./prometheus/data:/prometheus` and Prometheus is configured to use `/prometheus` as its TSDB path (see `docker-compose.yml` `--storage.tsdb.path`). That means historical metrics are persisted on the host and survive container recreation. Retention is controlled by `--storage.tsdb.retention.time` (currently set to `5d` in the compose file).
+      - Grafana database (dashboards, users, preferences) — this repo now mounts `./grafana/data:/var/lib/grafana`, so Grafana's sqlite DB and provisioned dashboards persist across restarts/recreates.
+      - Grafana provisioning — this repo mounts `./grafana/provisioning:/etc/grafana/provisioning:ro`. Place datasource YAMLs in `grafana/provisioning/datasources` and dashboard JSON files in `grafana/provisioning/dashboards` to have Grafana auto-load them at startup.
       - Any files stored inside container image layers (not mounted) are ephemeral across container recreate.
 
 - Why you saw `down` for the old target

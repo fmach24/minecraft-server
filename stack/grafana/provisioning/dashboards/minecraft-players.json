@@ -1,0 +1,44 @@
+{
+  "annotations": {"list": []},
+  "editable": true,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {"defaults": {}, "overrides": []},
+      "gridPos": {"h": 6, "w": 6, "x": 0, "y": 0},
+      "id": 1,
+      "options": {},
+      "targets": [
+        {"expr": "minecraft_players_online", "legendFormat": "online", "refId": "A"}
+      ],
+      "title": "Players Online",
+      "type": "stat"
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {"defaults": {}, "overrides": []},
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 6},
+      "id": 2,
+      "options": {},
+      "targets": [
+        {"expr": "minecraft_player_deaths", "legendFormat": "{{player}}", "refId": "A"}
+      ],
+      "title": "Deaths by Player",
+      "type": "barchart"
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 30,
+  "style": "dark",
+  "tags": ["minecraft"],
+  "templating": {"list": []},
+  "time": {"from": "now-6h", "to": "now"},
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Minecraft: Players & Deaths",
+  "version": 1
+}
