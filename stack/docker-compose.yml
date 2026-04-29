@@ -84,8 +84,9 @@ services:
     restart: unless-stopped
 
 
-
+#TODO
  #    !!!!!!!!jak latwo sprawdzac logiii  !!!!!!!!jak latwo sprawdzac logiii 
+ #+ pobieranie mapy co jakis czas
 
 volumes:
   prometheus_data:
