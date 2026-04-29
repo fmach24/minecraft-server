@@ -1,7 +1,6 @@
 auth_enabled: false
 server:
   http_listen_port: 3100
-  http_grpc_port: 9095
 
 ingester:
   lifecycler:
