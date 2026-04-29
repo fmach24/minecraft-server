@@ -33,14 +33,6 @@
         - "{{ app_path }}/mc-data"
         - "{{ app_path }}/config"
 
-    - name: 3b. Przygotuj dane Grafany (wlasciwe uprawnienia)
-      file:
-        path: "{{ app_path }}/grafana-data"
-        state: directory
-        owner: "472"
-        group: "472"
-        mode: '0755'
-
     - name: 4. Skopiuj pliki Stacku na serwer
       copy:
         src: ../stack/
@@ -58,18 +50,10 @@
         mode: '0644'
       register: props_copy
 
-    - name: 4c. Ustaw uprawnienia Grafany (rekurencyjnie)
-      file:
-        path: "{{ app_path }}/grafana-data"
-        state: directory
-        owner: "472"
-        group: "472"
-        recurse: yes
-
     - name: 5. Odpal wszystkie kontenery
       become_user: "{{ mc_user }}"
       shell:
-        cmd: docker compose up -d --remove-orphans
+        cmd: docker compose up -d --remove-orphans --force-recreate
         chdir: "{{ app_path }}"
       when: stack_copy.changed
 
