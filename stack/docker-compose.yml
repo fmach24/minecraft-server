@@ -98,7 +98,7 @@ services:
       - ./promtail/config.yml:/etc/promtail/config.yml:ro
       - /var/lib/docker/containers:/var/lib/docker/containers:ro
       - /var/log:/var/log:ro
- #     - ./promtail/positions.yaml:/tmp/positions.yaml
+      - ./promtail/positions.yaml:/tmp/positions.yaml
     restart: unless-stopped
 
 # TODO: jak latwo sprawdzac logiii
