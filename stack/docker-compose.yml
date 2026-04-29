@@ -74,3 +74,8 @@ services:
     volumes:
       - ./mc-data:/data:ro
     restart: unless-stopped
+
+
+
+
+    !!!!!!!!jak latwo sprawdzac logiii 
