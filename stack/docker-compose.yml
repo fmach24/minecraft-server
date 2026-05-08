@@ -5,7 +5,7 @@ services:
     environment:
       EULA: "TRUE"
       TYPE: "PAPER"     # SERVER TYPE (PAPER, SPIGOT, VANILLA)
-      VERSION: "1.21.11" # MC VERSION
+      VERSION: "26.1.2" # MC VERSION
       MEMORY: "5G"      # MEMORY ALLOCATED TO MC
     volumes:
       - ./mc-data:/data
