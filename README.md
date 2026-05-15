@@ -29,7 +29,7 @@ Automated deployment, monitoring, and management of a Minecraft server using mod
 ### 2. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/minecraft-server-automation.git
+git clone https://github.com/fmach24/minecraft-server.git
 cd minecraft-server-automation
 ```
 
