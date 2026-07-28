@@ -6,7 +6,7 @@ services:
       EULA: "TRUE"
       TYPE: "PAPER"     # SERVER TYPE (PAPER, SPIGOT, VANILLA)
       VERSION: "26.1.2" # MC VERSION
-      MEMORY: "5G"      # MEMORY ALLOCATED TO MC
+      MEMORY: "7G"      # MEMORY ALLOCATED TO MC
     volumes:
       - ./mc-data:/data
       - ./config/server.properties:/data/server.properties
@@ -89,6 +89,6 @@ services:
  #+ pobieranie mapy co jakis czas
  #zeby byly na stale dashboardy node + docker stats
 
-volumes:
-  prometheus_data:
-  grafana_data:
+# volumes:
+#   prometheus_data:
+#   grafana_data:
